@@ -33,9 +33,13 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="result"></td>
+              <td class="result">
+                {{ displayResult }}
+              </td>
               <td></td>
-              <td class="phase"></td>
+              <td class="phase">
+                {{ kyokumen }}
+              </td>
               <td></td>
             </tr>
             <tr>
@@ -83,6 +87,24 @@ export default {
     ComKomadai,
     PlayerKomadai,
     ResetBtn
+  },
+  data() {
+    return {
+      phase: 1,
+      gameResult: null,
+      phaseResult: null,
+      playerSelectingKoma: null,
+      comSelectingKoma: null,
+      canBattle: false
+    }
+  },
+  computed: {
+    kyokumen() {
+      return this.phase === 1 ? "初手" : this.phase + "手目"
+    },
+    displayResult() {
+      return this.gameResult ? this.gameResult : this.phaseResult
+    }
   }
 }
 </script>
