@@ -9,13 +9,9 @@
         <table>
           <tbody>
             <tr class="com-row">
-              <td>歩</td>
-              <td>香</td>
-              <td>桂</td>
-              <td>銀</td>
-              <td>金</td>
-              <td>角</td>
-              <td>飛</td>
+              <td v-for="(koma, index) in komaList" :key="index">
+                {{ koma.label }}
+              </td>
             </tr>
             <tr>
               <td v-for="n in 7" :key="n"></td>
@@ -55,13 +51,9 @@
               <td v-for="n in 7" :key="n"></td>
             </tr>
             <tr class="player-row">
-              <td>歩</td>
-              <td>香</td>
-              <td>桂</td>
-              <td>銀</td>
-              <td>金</td>
-              <td>角</td>
-              <td>飛</td>
+              <td v-for="(koma, index) in komaList" :key="index">
+                {{ koma.label }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -76,6 +68,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
 import GameRule from "./GameRule"
 import ComKomadai from "./ComKomadai"
 import PlayerKomadai from "./PlayerKomadai"
@@ -99,6 +92,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(["komaList"]),
     kyokumen() {
       return this.phase === 1 ? "初手" : this.phase + "手目"
     },

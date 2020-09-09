@@ -14,11 +14,21 @@
         </tr>
       </tbody>
     </table>
-    <div class="com-point"></div>
+    <div class="com-point">
+      {{ comPoint }}
+    </div>
   </div>
 </template>
 
-<script></script>
+<script>
+import { mapState } from "vuex"
+
+export default {
+  computed: {
+    ...mapState(["komaList", "comKomadai", "comPoint"])
+  }
+}
+</script>
 
 <style scoped>
 table {

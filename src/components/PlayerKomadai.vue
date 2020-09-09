@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="player-point"></div>
+    <div class="player-point">
+      {{ playerPoint }}
+    </div>
     <table>
       <tbody>
         <tr>
@@ -18,7 +20,15 @@
   </div>
 </template>
 
-<script></script>
+<script>
+import { mapState } from "vuex"
+
+export default {
+  computed: {
+    ...mapState(["komaList", "playerKomadai", "playerPoint"])
+  }
+}
+</script>
 
 <style scoped>
 table {
