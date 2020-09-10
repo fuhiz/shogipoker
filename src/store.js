@@ -23,6 +23,42 @@ const store = new Vuex.Store({
     playerSelectable: Object.assign([], komaIndexList),
     comSelectable: Object.assign([], komaIndexList)
   },
-  mutations: {}
+  mutations: {
+    // Playerの選択可能な駒を更新
+    updatePlayerSelectable(state, komaIndex) {
+      const index = state.playerSelectable.indexOf(komaIndex)
+      state.playerSelectable.splice(index, 1)
+    },
+    // Comの選択可能な駒を更新
+    updateComSelectable(state, komaIndex) {
+      const index = state.comSelectable.indexOf(komaIndex)
+      state.comSelectable.splice(index, 1)
+    },
+    // Playerのポイントを加算
+    addPlayerPoint(state, point) {
+      state.playerPoint += point
+    },
+    // Comのポイントを加算
+    addComPoint(state, point) {
+      state.comPoint += point
+    },
+    // Playerの駒台に駒を追加
+    addPlayerKoma(state, komaIndex) {
+      state.playerKomadai.push(komaIndex)
+    },
+    // Comの駒台に駒を追加
+    addComKoma(state, komaIndex) {
+      state.comKomadai.push(komaIndex)
+    },
+    // リセット
+    reset(state) {
+      state.playerPoint = 0
+      state.comPoint = 0
+      state.playerKomadai = []
+      state.comKomadai = []
+      state.playerSelectable = Object.assign([], komaIndexList)
+      state.comSelectable = Object.assign([], komaIndexList)
+    }
+  }
 })
 export default store
