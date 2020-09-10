@@ -6,14 +6,14 @@
     <table>
       <tbody>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{ showKomaLabel("fu") }}</td>
+          <td>{{ showKomaLabel("kyosha") }}</td>
+          <td>{{ showKomaLabel("keima") }}</td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{ showKomaLabel("gin") }}</td>
+          <td>{{ showKomaLabel("kin") }}</td>
+          <td>{{ showKomaLabel("kaku") }}</td>
         </tr>
       </tbody>
     </table>
@@ -26,6 +26,13 @@ import { mapState } from "vuex"
 export default {
   computed: {
     ...mapState(["komaList", "playerKomadai", "playerPoint"])
+  },
+  methods: {
+    showKomaLabel(komaIndex) {
+      if (this.playerKomadai.includes(komaIndex)) {
+        return this.komaList[komaIndex].label
+      }
+    }
   }
 }
 </script>
