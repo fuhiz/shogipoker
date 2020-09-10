@@ -71,7 +71,7 @@
       </div>
       <div class="player-komadai">
         <player-komadai />
-        <reset-btn />
+        <reset-btn @reset-data="reset" />
         <game-rule />
       </div>
     </div>
@@ -126,18 +126,32 @@ export default {
     select(komaIndex) {
       if (this.playerSelectable.includes(komaIndex)) {
         this.playerSelectingKoma = komaIndex
+        this.canBattle = true
+        this.comSelectingKoma = null
       }
     },
     // ○手目をクリック
     bet() {
+      // 対決不可なら処理をしない
+      if (!this.canBattle) {
+        return
+      }
+      this.canBattle = false
+
       // comの駒をランダムに決める
       let size = this.comSelectable.length
       this.comSelectingKoma = this.comSelectable[Math.floor(Math.random() * size)]
+
+      // 使用可能な駒の更新
+      this.$store.commit("updatePlayerSelectable", this.playerSelectingKoma)
+      this.$store.commit("updateComSelectable", this.comSelectingKoma)
 
       this.battle()
 
       if (this.phase < 7) {
         this.phase++
+      } else {
+        this.setGameResult()
       }
     },
     // 対決
@@ -147,10 +161,33 @@ export default {
       const comKomaPoint = this.komaList[this.comSelectingKoma].point
       if (playerKomaPoint > comKomaPoint) {
         this.phaseResult = "WIN"
+        this.$store.commit("addPlayerPoint", comKomaPoint)
+        this.$store.commit("addPlayerKoma", this.comSelectingKoma)
       } else if (playerKomaPoint < comKomaPoint) {
         this.phaseResult = "LOSE"
+        this.$store.commit("addComPoint", playerKomaPoint)
+        this.$store.commit("addComKoma", this.playerSelectingKoma)
       } else {
         this.phaseResult = "DRAW"
+      }
+    },
+    // リセット
+    reset() {
+      this.phase = 1
+      this.gameResult = null
+      this.phaseResult = null
+      this.playerSelectingKoma = null
+      this.comSelectingKoma = null
+      this.canBattle = false
+    },
+    // ゲーム結果の表示
+    setGameResult() {
+      if (this.playerPoint > this.comPoint) {
+        this.gameResult = "勝ち"
+      } else if (this.playerPoint < this.comPoint) {
+        this.gameResult = "負け"
+      } else {
+        this.gameResult = "引き分け"
       }
     }
   }

@@ -1,8 +1,17 @@
 <template>
-  <div class="reset-btn">リセット</div>
+  <div @click="clickReset()" class="reset-btn">リセット</div>
 </template>
 
-<script></script>
+<script>
+export default {
+  methods: {
+    clickReset() {
+      this.$store.commit("reset")
+      this.$emit("reset-data")
+    }
+  }
+}
+</script>
 
 <style scoped>
 .reset-btn {
