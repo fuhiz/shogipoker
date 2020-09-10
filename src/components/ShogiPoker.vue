@@ -23,7 +23,9 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="com-select"></td>
+              <td class="com-select">
+                {{ comSelectingKomaLabel }}
+              </td>
               <td></td>
               <td></td>
               <td></td>
@@ -36,7 +38,7 @@
                 {{ displayResult }}
               </td>
               <td></td>
-              <td class="phase">
+              <td @click="bet()" class="phase">
                 {{ kyokumen }}
               </td>
               <td></td>
@@ -45,7 +47,9 @@
               <td></td>
               <td></td>
               <td></td>
-              <td class="player-select"></td>
+              <td class="player-select">
+                {{ playerSelectingKomaLabel }}
+              </td>
               <td></td>
               <td></td>
               <td></td>
@@ -59,6 +63,7 @@
                 :key="index"
                 :koma-index="index"
                 :koma="koma"
+                @select-koma="select"
               />
             </tr>
           </tbody>
@@ -102,12 +107,51 @@ export default {
     }
   },
   computed: {
-    ...mapState(["komaList"]),
+    ...mapState(["komaList", "playerSelectable", "comSelectable", "playerPoint", "comPoint"]),
     kyokumen() {
       return this.phase === 1 ? "初手" : this.phase + "手目"
     },
     displayResult() {
       return this.gameResult ? this.gameResult : this.phaseResult
+    },
+    playerSelectingKomaLabel() {
+      return this.playerSelectingKoma ? this.komaList[this.playerSelectingKoma].label : null
+    },
+    comSelectingKomaLabel() {
+      return this.comSelectingKoma ? this.komaList[this.comSelectingKoma].label : null
+    }
+  },
+  methods: {
+    // playerが駒を選択
+    select(komaIndex) {
+      if (this.playerSelectable.includes(komaIndex)) {
+        this.playerSelectingKoma = komaIndex
+      }
+    },
+    // ○手目をクリック
+    bet() {
+      // comの駒をランダムに決める
+      let size = this.comSelectable.length
+      this.comSelectingKoma = this.comSelectable[Math.floor(Math.random() * size)]
+
+      this.battle()
+
+      if (this.phase < 7) {
+        this.phase++
+      }
+    },
+    // 対決
+    battle() {
+      // PlayerとComの駒ポイントを比較
+      const playerKomaPoint = this.komaList[this.playerSelectingKoma].point
+      const comKomaPoint = this.komaList[this.comSelectingKoma].point
+      if (playerKomaPoint > comKomaPoint) {
+        this.phaseResult = "WIN"
+      } else if (playerKomaPoint < comKomaPoint) {
+        this.phaseResult = "LOSE"
+      } else {
+        this.phaseResult = "DRAW"
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <td :class="getKomaClass()">{{ koma.label }}</td>
+  <td @click="clickKoma()" :class="getKomaClass()">{{ koma.label }}</td>
 </template>
 
 <script>
@@ -23,6 +23,9 @@ export default {
       if (!this.playerSelectable.includes(this.komaIndex)) {
         return "unselectable"
       }
+    },
+    clickKoma() {
+      this.$emit("select-koma", this.komaIndex)
     }
   }
 }
