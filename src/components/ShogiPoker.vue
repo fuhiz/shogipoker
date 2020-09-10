@@ -9,9 +9,12 @@
         <table>
           <tbody>
             <tr class="com-row">
-              <td v-for="(koma, index) in komaList" :key="index">
-                {{ koma.label }}
-              </td>
+              <com-koma
+                v-for="(koma, index) in this.komaList"
+                :key="index"
+                :koma-index="index"
+                :koma="koma"
+              />
             </tr>
             <tr>
               <td v-for="n in 7" :key="n"></td>
@@ -51,9 +54,12 @@
               <td v-for="n in 7" :key="n"></td>
             </tr>
             <tr class="player-row">
-              <td v-for="(koma, index) in komaList" :key="index">
-                {{ koma.label }}
-              </td>
+              <player-koma
+                v-for="(koma, index) in this.komaList"
+                :key="index"
+                :koma-index="index"
+                :koma="koma"
+              />
             </tr>
           </tbody>
         </table>
@@ -73,13 +79,17 @@ import GameRule from "./GameRule"
 import ComKomadai from "./ComKomadai"
 import PlayerKomadai from "./PlayerKomadai"
 import ResetBtn from "./ResetBtn"
+import ComKoma from "./ComKoma"
+import PlayerKoma from "./PlayerKoma"
 
 export default {
   components: {
     GameRule,
     ComKomadai,
     PlayerKomadai,
-    ResetBtn
+    ResetBtn,
+    ComKoma,
+    PlayerKoma
   },
   data() {
     return {
